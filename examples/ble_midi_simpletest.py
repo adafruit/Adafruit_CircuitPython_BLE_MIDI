@@ -1,14 +1,13 @@
 """
-This example acts as a keyboard to peer devices.
+This example sends MIDI out. It sends NoteOn and then NoteOff with a random pitch bend.
 """
 
 import time
 import random
 import adafruit_ble
+from adafruit_ble.advertising.standard import ProvideServicesAdvertisement
 import adafruit_ble_midi
 import adafruit_midi
-from adafruit_ble.advertising import Advertisement
-from adafruit_ble.advertising.standard import ProvideServicesAdvertisement
 from adafruit_midi.control_change import ControlChange
 from adafruit_midi.note_off import NoteOff
 from adafruit_midi.note_on import NoteOn
@@ -17,7 +16,7 @@ from adafruit_midi.pitch_bend import PitchBend
 # Use default HID descriptor
 midi_service = adafruit_ble_midi.MIDIService()
 advertisement = ProvideServicesAdvertisement(midi_service)
-#advertisement.appearance = 961
+# advertisement.appearance = 961
 
 ble = adafruit_ble.BLERadio()
 if ble.connected:
@@ -41,10 +40,8 @@ while True:
         midi.send(a_pitch_bend)
         time.sleep(0.25)
         # note how a list of messages can be used
-        midi.send([NoteOff("G#2", 120),
-                   ControlChange(3, 44)])
+        midi.send([NoteOff("G#2", 120), ControlChange(3, 44)])
         time.sleep(0.5)
-        print(midi_service.read(10))
     print("Disconnected")
     print()
     ble.start_advertising(advertisement)

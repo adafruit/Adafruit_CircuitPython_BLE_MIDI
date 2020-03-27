@@ -4,10 +4,12 @@ This example acts as a keyboard to peer devices.
 
 import time
 import adafruit_ble
+from adafruit_ble.advertising.standard import ProvideServicesAdvertisement
 import adafruit_ble_midi
 import adafruit_midi
-from adafruit_ble.advertising import Advertisement
-from adafruit_ble.advertising.standard import ProvideServicesAdvertisement
+
+# These import auto-register the message type with the MIDI machinery.
+# pylint: disable=unused-import
 from adafruit_midi.control_change import ControlChange
 from adafruit_midi.midi_message import MIDIUnknownEvent
 from adafruit_midi.note_off import NoteOff
