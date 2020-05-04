@@ -79,7 +79,8 @@ class MIDIService(Service):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._in_buffer = bytearray(self._raw.packet_size)
+        # Defer creating _in_buffer until we're definitely connected.
+        self._in_buffer = None
         self._out_buffer = None
         shared_buffer = memoryview(bytearray(4))
         self._buffers = [
@@ -102,6 +103,8 @@ class MIDIService(Service):
         """Reads up to ``length`` bytes into ``buf`` starting at index 0.
 
            Returns the number of bytes written into ``buf``."""
+        if self._in_buffer is None:
+            self._in_buffer = bytearray(self._raw.packet_size)
         i = 0
         while i < length:
             if self._in_index < self._in_length:
@@ -119,8 +122,6 @@ class MIDIService(Service):
                 buf[i] = byte
                 i += 1
             else:
-                if len(self._in_buffer) < self._raw.packet_size:
-                    self._in_buffer = bytearray(self._raw.packet_size)
                 self._in_length = self._raw.readinto(self._in_buffer)
                 if self._in_length == 0:
                     break
@@ -168,7 +169,7 @@ class MIDIService(Service):
                     if self._message_target_length:
                         self._pending_realtime = b
                     else:
-                        self._raw.write(b, self._header)
+                        self._raw.write(b, header=self._header)
                 else:
                     if (
                         0x80 <= data <= 0xBF or 0xE0 <= data <= 0xEF or data == 0xF2

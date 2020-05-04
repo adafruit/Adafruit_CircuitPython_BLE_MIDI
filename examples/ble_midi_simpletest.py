@@ -33,6 +33,13 @@ while True:
     while not ble.connected:
         pass
     print("Connected")
+    # Sleep briefly so client can get ready and send setup
+    # writes to the MIDIService. 0.5secs was insufficient.
+    time.sleep(1.0)
+    # Send one unique NoteOn/Off at the beginning to check that the
+    # delay is sufficient.
+    midi.send(NoteOn(20, 99))
+    midi.send(NoteOff(20, 99))
     while ble.connected:
         midi.send(NoteOn(44, 120))  # G sharp 2nd octave
         time.sleep(0.25)
