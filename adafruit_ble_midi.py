@@ -169,7 +169,7 @@ class MIDIService(Service):
                     if self._message_target_length:
                         self._pending_realtime = b
                     else:
-                        self._raw.write(b, self._header)
+                        self._raw.write(b, header=self._header)
                 else:
                     if (
                         0x80 <= data <= 0xBF or 0xE0 <= data <= 0xEF or data == 0xF2
