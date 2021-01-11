@@ -5,7 +5,6 @@ This example acts as a keyboard to peer devices.
 import time
 import adafruit_ble
 from adafruit_ble.advertising.standard import ProvideServicesAdvertisement
-import adafruit_ble_midi
 import adafruit_midi
 
 # These import auto-register the message type with the MIDI machinery.
@@ -15,6 +14,9 @@ from adafruit_midi.midi_message import MIDIUnknownEvent
 from adafruit_midi.note_off import NoteOff
 from adafruit_midi.note_on import NoteOn
 from adafruit_midi.pitch_bend import PitchBend
+
+import adafruit_ble_midi
+
 
 # Use default HID descriptor
 midi_service = adafruit_ble_midi.MIDIService()
