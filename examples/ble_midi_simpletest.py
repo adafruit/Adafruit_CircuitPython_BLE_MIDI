@@ -6,12 +6,12 @@ import time
 import random
 import adafruit_ble
 from adafruit_ble.advertising.standard import ProvideServicesAdvertisement
-import adafruit_ble_midi
 import adafruit_midi
 from adafruit_midi.control_change import ControlChange
 from adafruit_midi.note_off import NoteOff
 from adafruit_midi.note_on import NoteOn
 from adafruit_midi.pitch_bend import PitchBend
+import adafruit_ble_midi
 
 # Use default HID descriptor
 midi_service = adafruit_ble_midi.MIDIService()
