@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2017 Scott Shawcroft, written for Adafruit Industries
+#
+# SPDX-License-Identifier: MIT
+
 name: Release Actions
 
 on:
@@ -20,10 +24,10 @@ jobs:
         awk -F '\/' '{ print tolower($2) }' |
         tr '_' '-'
         )
-    - name: Set up Python 3.7
+    - name: Set up Python 3.6
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
+        python-version: 3.6
     - name: Versions
       run: |
         python3 --version
