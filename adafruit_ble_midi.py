@@ -1,24 +1,7 @@
-# The MIT License (MIT)
+# SPDX-FileCopyrightText: 2020 Scott Shawcroft for Adafruit Industries
 #
-# Copyright (c) 2020 Scott Shawcroft for Adafruit Industries LLC
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# SPDX-License-Identifier: MIT
+
 """
 `adafruit_ble_midi`
 ================================================================================
@@ -43,7 +26,7 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BLE_MIDI.git"
 class _MidiCharacteristic(ComplexCharacteristic):
     """Endpoint for sending commands to a media player. The value read will list all available
 
-       commands."""
+    commands."""
 
     uuid = VendorUUID("7772E5DB-3868-4112-A1A9-F2669D106BF3")
 
@@ -66,10 +49,10 @@ class _MidiCharacteristic(ComplexCharacteristic):
 
 class MIDIService(Service):
     """BLE MIDI service. It acts just like a USB MIDI PortIn and PortOut and can be used as a drop
-       in replacement.
+    in replacement.
 
-       BLE MIDI's protocol includes timestamps for MIDI messages. This class automatically adds them
-       to MIDI data written out and strips them from MIDI data read in."""
+    BLE MIDI's protocol includes timestamps for MIDI messages. This class automatically adds them
+    to MIDI data written out and strips them from MIDI data read in."""
 
     uuid = VendorUUID("03B80E5A-EDE8-4B33-A751-6CE34EC4C700")
     _raw = _MidiCharacteristic()
@@ -102,7 +85,7 @@ class MIDIService(Service):
     def readinto(self, buf, length):
         """Reads up to ``length`` bytes into ``buf`` starting at index 0.
 
-           Returns the number of bytes written into ``buf``."""
+        Returns the number of bytes written into ``buf``."""
         if self._in_buffer is None:
             self._in_buffer = bytearray(self._raw.packet_size)
         i = 0

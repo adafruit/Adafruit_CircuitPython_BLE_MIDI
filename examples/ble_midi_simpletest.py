@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 """
 This example sends MIDI out. It sends NoteOn and then NoteOff with a random pitch bend.
 """
