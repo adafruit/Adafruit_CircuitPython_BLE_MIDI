@@ -87,7 +87,7 @@ class MIDIService(Service):
 
         Returns the number of bytes written into ``buf``."""
         if self._in_buffer is None:
-            self._in_buffer = bytearray(self._raw.packet_size)
+            self._in_buffer = bytearray(self._raw.incoming_packet_length)
         i = 0
         while i < length:
             if self._in_index < self._in_length:
