@@ -110,6 +110,11 @@ Usage Example
         print()
         ble.start_advertising(advertisement)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/ble_midi/en/latest/>`_.
+
 Contributing
 ============
 
