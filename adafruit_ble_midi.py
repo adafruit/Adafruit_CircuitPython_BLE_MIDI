@@ -19,7 +19,7 @@ from adafruit_ble.characteristics import Characteristic, ComplexCharacteristic
 from adafruit_ble.uuid import VendorUUID
 from adafruit_ble.services import Service
 
-__version__ = "0.0.0-auto.0"
+__version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BLE_MIDI.git"
 
 
