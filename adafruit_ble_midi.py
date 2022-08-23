@@ -19,6 +19,11 @@ from adafruit_ble.characteristics import Characteristic, ComplexCharacteristic
 from adafruit_ble.uuid import VendorUUID
 from adafruit_ble.services import Service
 
+try:
+    from circuitpython_typing import WriteableBuffer, ReadableBuffer
+except ImportError:
+    pass
+
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BLE_MIDI.git"
 
@@ -30,7 +35,7 @@ class _MidiCharacteristic(ComplexCharacteristic):
 
     uuid = VendorUUID("7772E5DB-3868-4112-A1A9-F2669D106BF3")
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             properties=Characteristic.WRITE_NO_RESPONSE
             | Characteristic.READ
@@ -41,7 +46,7 @@ class _MidiCharacteristic(ComplexCharacteristic):
             fixed_length=False,
         )
 
-    def bind(self, service):
+    def bind(self, service: Service) -> _bleio.PacketBuffer:
         """Binds the characteristic to the given Service."""
         bound_characteristic = super().bind(service)
         return _bleio.PacketBuffer(bound_characteristic, buffer_size=4)
@@ -60,7 +65,7 @@ class MIDIService(Service):
     # so it complains about missing members.
     # pylint: disable=no-member
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         # Defer creating _in_buffer until we're definitely connected.
         self._in_buffer = None
@@ -82,7 +87,7 @@ class MIDIService(Service):
         self._in_index = 1
         self._last_data = True
 
-    def readinto(self, buf, length):
+    def readinto(self, buf: WriteableBuffer, length: int) -> int:
         """Reads up to ``length`` bytes into ``buf`` starting at index 0.
 
         Returns the number of bytes written into ``buf``."""
@@ -115,13 +120,13 @@ class MIDIService(Service):
 
         return i
 
-    def read(self, length):
+    def read(self, length: int) -> bytearray:
         """Reads up to ``length`` bytes and returns them."""
         result = bytearray(length)
         i = self.readinto(result, length)
         return result[:i]
 
-    def write(self, buf, length):
+    def write(self, buf: ReadableBuffer, length: int) -> None:
         """Writes ``length`` bytes out."""
         # pylint: disable=too-many-branches
         timestamp_ms = time.monotonic_ns() // 1000000
