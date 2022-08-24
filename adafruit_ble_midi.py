@@ -47,9 +47,7 @@ class _MidiCharacteristic(ComplexCharacteristic):
             fixed_length=False,
         )
 
-    def bind(  # pylint:disable=used-before-assignment
-        self, service: MIDIService
-    ) -> _bleio.PacketBuffer:
+    def bind(self, service: "MIDIService") -> _bleio.PacketBuffer:
         """Binds the characteristic to the given Service."""
         bound_characteristic = super().bind(service)
         return _bleio.PacketBuffer(bound_characteristic, buffer_size=4)
