@@ -20,6 +20,7 @@ from adafruit_ble.uuid import VendorUUID
 from adafruit_ble.services import Service
 
 try:
+    import typing  # pylint: disable=unused-import
     from circuitpython_typing import WriteableBuffer, ReadableBuffer
 except ImportError:
     pass
@@ -46,7 +47,7 @@ class _MidiCharacteristic(ComplexCharacteristic):
             fixed_length=False,
         )
 
-    def bind(self, service: Service) -> _bleio.PacketBuffer:
+    def bind(self, service: MIDIService) -> _bleio.PacketBuffer:
         """Binds the characteristic to the given Service."""
         bound_characteristic = super().bind(service)
         return _bleio.PacketBuffer(bound_characteristic, buffer_size=4)
