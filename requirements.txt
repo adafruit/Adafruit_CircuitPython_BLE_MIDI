@@ -4,3 +4,4 @@
 
 Adafruit-Blinka
 adafruit-circuitpython-ble
+adafruit-circuitpython-typing
