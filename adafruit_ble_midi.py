@@ -13,15 +13,15 @@ BLE MIDI service for CircuitPython
 import time
 
 import _bleio
-
 from adafruit_ble.attributes import Attribute
 from adafruit_ble.characteristics import Characteristic, ComplexCharacteristic
-from adafruit_ble.uuid import VendorUUID
 from adafruit_ble.services import Service
+from adafruit_ble.uuid import VendorUUID
 
 try:
-    import typing  # pylint: disable=unused-import
-    from circuitpython_typing import WriteableBuffer, ReadableBuffer
+    import typing
+
+    from circuitpython_typing import ReadableBuffer, WriteableBuffer
 except ImportError:
     pass
 
@@ -62,9 +62,7 @@ class MIDIService(Service):
 
     uuid = VendorUUID("03B80E5A-EDE8-4B33-A751-6CE34EC4C700")
     _raw = _MidiCharacteristic()
-    # _raw gets shadowed for each MIDIService instance by a PacketBuffer. PyLint doesn't know this
-    # so it complains about missing members.
-    # pylint: disable=no-member
+    # _raw gets shadowed for each MIDIService instance by a PacketBuffer.
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -129,7 +127,6 @@ class MIDIService(Service):
 
     def write(self, buf: ReadableBuffer, length: int) -> None:
         """Writes ``length`` bytes out."""
-        # pylint: disable=too-many-branches
         timestamp_ms = time.monotonic_ns() // 1000000
         self._header[0] = (timestamp_ms >> 7 & 0x3F) | 0x80
         i = 0
@@ -152,9 +149,7 @@ class MIDIService(Service):
                 b = self._buffers[2]
                 b[0] = 0x80 | (timestamp_ms & 0x7F)
                 b[1] = data
-                if (
-                    0xF6 <= data <= 0xFF or self._in_sysex
-                ):  # Real time, command only or start sysex
+                if 0xF6 <= data <= 0xFF or self._in_sysex:  # Real time, command only or start sysex
                     if self._message_target_length:
                         self._pending_realtime = b
                     else:
