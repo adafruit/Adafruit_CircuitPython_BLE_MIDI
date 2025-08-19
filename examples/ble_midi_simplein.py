@@ -19,6 +19,7 @@ from adafruit_midi.note_on import NoteOn
 from adafruit_midi.pitch_bend import PitchBend
 
 import adafruit_ble_midi
+from adafruit_ble_midi import MIDIService
 
 # Use default HID descriptor
 midi_service = adafruit_ble_midi.MIDIService()
@@ -35,16 +36,29 @@ print("advertising")
 ble.start_advertising(advertisement)
 
 while True:
-    print("Waiting for connection")
-    while not ble.connected:
-        pass
-    print("Connected")
-    while ble.connected:
-        midi_in = midi.receive()
-        while midi_in:
-            if not isinstance(midi_in, MIDIUnknownEvent):
-                print(time.monotonic(), midi_in)
-            midi_in = midi.receive()
-    print("Disconnected")
-    print()
-    ble.start_advertising(advertisement)
+    print("Waiting for connection to a MIDI device")
+    for advertisement in ble.start_scan(ProvideServicesAdvertisement, timeout=60):
+        if MIDIService not in advertisement.services:
+            continue
+        ble.connect(advertisement)
+        break
+
+    if ble.connections:
+        for connection in ble.connections:
+            if connection.connected and not connection.paired:
+                print("Connected; Pairing with the MIDI device")
+                connection.pair()
+
+        if connection.connected and connection.paired:
+            print("Paired")
+            midi_service = connection[MIDIService]
+            midi = adafruit_midi.MIDI(midi_out=midi_service, midi_in=midi_service)
+
+            while ble.connected:
+                midi_in = midi.receive()
+                while midi_in:
+                    if not isinstance(midi_in, MIDIUnknownEvent):
+                        print(time.monotonic(), midi_in)
+                    midi_in = midi.receive()
+            print("Disconnected")
+            print()
