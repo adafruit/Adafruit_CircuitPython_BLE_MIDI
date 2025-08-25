@@ -37,23 +37,29 @@ while True:
     print("Waiting for connection")
     while not ble.connected:
         pass
-    print("Connected")
-    # Sleep briefly so client can get ready and send setup
-    # writes to the MIDIService. 0.5secs was insufficient.
-    time.sleep(1.0)
-    # Send one unique NoteOn/Off at the beginning to check that the
-    # delay is sufficient.
-    midi.send(NoteOn(20, 99))
-    midi.send(NoteOff(20, 99))
-    while ble.connected:
-        midi.send(NoteOn(44, 120))  # G sharp 2nd octave
-        time.sleep(0.25)
-        a_pitch_bend = PitchBend(random.randint(0, 16383))
-        midi.send(a_pitch_bend)
-        time.sleep(0.25)
-        # note how a list of messages can be used
-        midi.send([NoteOff("G#2", 120), ControlChange(3, 44)])
-        time.sleep(0.5)
+    print("Connected; waiting for pairing")
+    for connection in ble.connections:
+        while not connection.paired:
+            if not connection.connected:
+                break
+    if connection.paired:
+        print("Paired; sending MIDI messages")
+        # Sleep briefly so client can get ready and send setup
+        # writes to the MIDIService. 0.5secs was insufficient.
+        time.sleep(3.0)
+        # Send one unique NoteOn/Off at the beginning to check that the
+        # delay is sufficient.
+        midi.send(NoteOn(20, 99))
+        midi.send(NoteOff(20, 99))
+        while ble.connected:
+            midi.send(NoteOn(44, 120))  # G sharp 2nd octave
+            time.sleep(0.25)
+            a_pitch_bend = PitchBend(random.randint(0, 16383))
+            midi.send(a_pitch_bend)
+            time.sleep(0.25)
+            # note how a list of messages can be used
+            midi.send([NoteOff("G#2", 120), ControlChange(3, 44)])
+            time.sleep(0.5)
     print("Disconnected")
     print()
     ble.start_advertising(advertisement)
