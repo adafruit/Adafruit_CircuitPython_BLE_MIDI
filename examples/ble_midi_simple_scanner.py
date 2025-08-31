@@ -24,7 +24,6 @@ from adafruit_ble_midi import MIDIService
 
 # Use default HID descriptor
 midi_service = adafruit_ble_midi.MIDIService()
-advertisement = ProvideServicesAdvertisement(midi_service)
 
 ble = adafruit_ble.BLERadio()
 if ble.connected:
@@ -32,9 +31,6 @@ if ble.connected:
         c.disconnect()
 
 midi = adafruit_midi.MIDI(midi_out=midi_service, midi_in=midi_service, out_channel=0)
-
-print("advertising")
-ble.start_advertising(advertisement)
 
 while True:
     print("Waiting for connection to a MIDI device")
