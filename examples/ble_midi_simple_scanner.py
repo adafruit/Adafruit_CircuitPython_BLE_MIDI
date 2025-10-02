@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-FileCopyrightText: 2025 spridget
 # SPDX-License-Identifier: MIT
 
 """
